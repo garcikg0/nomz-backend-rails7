@@ -265,6 +265,17 @@ Devise.setup do |config|
   # The "*/*" below is required to match Internet Explorer requests.
   config.navigational_formats = []
 
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
+    jwt.dispatch_requests = [
+      ['POST', %r{^/login$}]
+    ]
+    jwt.dispatch_requests = [
+      ['DELETE', %r{^/logout$}]
+    ]
+    jwt.expiration_time = 120.minutes.to_i
+  end
+
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
@@ -314,15 +325,6 @@ Devise.setup do |config|
   # append JWT token to Authorization header as “Bearer” + token when there’s a successful response sent back, 
   # and on a delete call to logout endpoint, the token should be revoked. 
   # The jwt.expiration_time sets the expiration time for the generated token. In this example, it’s 120 minutes.
-  config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
-    jwt.dispatch_requests = [
-      ['POST', %r{^/login$}]
-    ]
-    jwt.dispatch_requests = [
-      ['DELETE', %r{^/logout$}]
-    ]
-    jwt.expiration_time = 120.minutes.to_i
-  end
+
 
 end
