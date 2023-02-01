@@ -11,5 +11,6 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   post '/login', to: 'users#login'
+  post '/signup', to: 'users#create'
 
 end
