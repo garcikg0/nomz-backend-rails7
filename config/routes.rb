@@ -12,6 +12,6 @@ Rails.application.routes.draw do
 
   post '/login', to: 'users#login'
   post '/signup', to: 'users#create'
-  get '/autologin', to: "user#autologin"
+  get '/autologin', to: "users#autologin"
 
 end
