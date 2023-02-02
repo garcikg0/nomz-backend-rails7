@@ -7,7 +7,6 @@ class UsersController < ApplicationController
         if @user && @user.authenticate(params[:password])
             @token = encode_token( { user_id: @user.id})
             @serialized_user = UserSerializer.new(@user)
-            binding.break
             render json: { user: @serialized_user.attributes, token: @token }
         else
             render json: {message: "Invalid username or password"}, status: :unauthorized
@@ -25,7 +24,8 @@ class UsersController < ApplicationController
 
         if @user.valid?
             @token = encode_token({user_id: @user.index})
-            render json: { user: UserSerializer.new(@user), token: @token }, status: :created
+            @serialized_user = UserSerializer.new(@user)
+            render json: { user: @serialized_user.attributes, token: @token }, status: :created
         else
             render json: { message: @user.errors.full_messages}, status: :bad_request
         end
@@ -33,7 +33,8 @@ class UsersController < ApplicationController
     end
 
     def autologin
-        render json: @current_user
+        @serialized_user = UserSerializer.new(@current_user)
+        render json: @serialized_user.attributes
     end
 
 end
